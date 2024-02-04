@@ -1,0 +1,24 @@
+services:
+  nestjs-auth-postgres:
+    image: postgres:alpine
+    container_name: nestjs-auth-postgres
+    volumes:
+      - ./.docker/postgres:/data/db
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    env_file:
+      - .env
+
+
+  nestjs-auth-redis:
+    container_name: nestjs-auth-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./.docker/redis:/redis
+    ports:
+      - 6379:${REDIS_PORT}
